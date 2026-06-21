@@ -2,6 +2,9 @@ node_modules/
 reports/
 @rerun.txt
 config/.env.local
+.DS_Store
+Thumbs.db
+.playwright-mcp/
 
 app/node_modules/
 app/dist/

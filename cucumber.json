@@ -7,7 +7,7 @@
     "formatOptions": { "snippetInterface": "async-await" }
   },
   "ui": {
-    "require": ["e2e/steps/ui/**/*.js", "e2e/support/**/*.js"],
+    "require": ["e2e/steps/ui/**/*.js", "e2e/steps/shared/**/*.js", "e2e/support/**/*.js"],
     "paths": ["e2e/features/ui/**/*.feature"],
     "tags": "not @manual",
     "parallel": 0,
