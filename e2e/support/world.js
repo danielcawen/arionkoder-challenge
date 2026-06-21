@@ -8,6 +8,7 @@ class CustomWorld {
     this.browser = null
     this.context = null
     this.page = null
+    this._uiTornDown = false
   }
 }
 

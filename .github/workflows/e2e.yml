@@ -3,11 +3,18 @@ name: E2E Tests
 on:
   workflow_dispatch:
 
+permissions:
+  pages: write
+  id-token: write
+
 jobs:
   e2e:
     runs-on: ubuntu-latest
     env:
       TEST_ENV: ci
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
 
     steps:
       - uses: actions/checkout@v5
@@ -58,9 +65,17 @@ jobs:
         if: steps.e2e.outcome == 'failure'
         run: npm run test:rerun
 
-      - name: Upload reports
+      - name: Prepare Pages report
         if: always()
-        uses: actions/upload-artifact@v5
+        run: cp reports/ui-report.html reports/index.html
+
+      - name: Upload Pages artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: cucumber-reports
           path: reports/
+
+      - name: Deploy to GitHub Pages
+        if: always()
+        id: deploy
+        uses: actions/deploy-pages@v4
