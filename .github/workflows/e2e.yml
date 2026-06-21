@@ -1,0 +1,67 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            app/package-lock.json
+
+      - name: Install E2E dependencies
+        run: npm install
+
+      - name: Install app dependencies
+        run: npm install
+        working-directory: app
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-firefox-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Firefox
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps firefox
+
+      - name: Install Firefox system dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps firefox
+
+      - name: Start app
+        run: npm run dev &
+        working-directory: app
+
+      - name: Wait for app
+        run: timeout 30 bash -c 'until curl -sf http://localhost:5173 > /dev/null; do sleep 1; done'
+
+      - name: Run E2E tests
+        id: e2e
+        run: npx cucumber-js --profile ui
+        continue-on-error: true
+
+      - name: Rerun failed scenarios
+        if: steps.e2e.outcome == 'failure'
+        run: npm run test:rerun
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-reports
+          path: reports/

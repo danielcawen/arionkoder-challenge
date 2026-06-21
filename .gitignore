@@ -1,0 +1,9 @@
+node_modules/
+reports/
+@rerun.txt
+config/.env.local
+
+app/node_modules/
+app/dist/
+
+.claude

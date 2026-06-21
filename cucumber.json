@@ -1,0 +1,31 @@
+{
+  "default": {
+    "require": ["e2e/steps/**/*.js", "e2e/support/**/*.js"],
+    "paths": ["e2e/features/**/*.feature"],
+    "parallel": 0,
+    "format": ["progress", "html:reports/cucumber-report.html", "json:reports/cucumber-results.json", "rerun:@rerun.txt"],
+    "formatOptions": { "snippetInterface": "async-await" }
+  },
+  "ui": {
+    "require": ["e2e/steps/ui/**/*.js", "e2e/support/**/*.js"],
+    "paths": ["e2e/features/ui/**/*.feature"],
+    "tags": "not @manual",
+    "parallel": 0,
+    "format": ["progress", "html:reports/ui-report.html", "json:reports/ui-results.json", "rerun:@rerun.txt"],
+    "formatOptions": { "snippetInterface": "async-await" }
+  },
+  "manual": {
+    "require": ["e2e/steps/**/*.js", "e2e/support/**/*.js"],
+    "paths": ["e2e/features/**/*.feature"],
+    "tags": "@manual",
+    "parallel": 0,
+    "format": ["progress", "html:reports/manual-report.html", "json:reports/manual-results.json"],
+    "formatOptions": { "snippetInterface": "async-await" }
+  },
+  "rerun": {
+    "require": ["e2e/steps/**/*.js", "e2e/support/**/*.js"],
+    "parallel": 0,
+    "format": ["progress", "html:reports/rerun-report.html", "json:reports/rerun-results.json"],
+    "formatOptions": { "snippetInterface": "async-await" }
+  }
+}
