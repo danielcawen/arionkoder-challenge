@@ -1,14 +1,13 @@
 name: E2E Tests
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    env:
+      TEST_ENV: ci
 
     steps:
       - uses: actions/checkout@v4

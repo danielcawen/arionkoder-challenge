@@ -142,3 +142,5 @@ Override the environment file with `TEST_ENV`:
 ```bash
 TEST_ENV=ci npx cucumber-js --profile ui   # loads config/.env.ci
 ```
+
+`config/.env.ci` is committed and used automatically by the GitHub Actions workflow. `config/.env.local` is gitignored and used for local development.
